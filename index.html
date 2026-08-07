@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12142A">
+<title>오늘의 브리핑 · 2026-08-08</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{background:#12142A}
+  body{
+    font-family:-apple-system,'Pretendard','Malgun Gothic',sans-serif;
+    background:#12142A;color:#F0EEE8;line-height:1.5;
+    max-width:480px;margin:0 auto;
+    padding:14px 14px calc(24px + env(safe-area-inset-bottom));
+  }
+  .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .top .kicker{font-size:11px;letter-spacing:.12em;color:#7A7A8C;font-weight:700}
+  .top .date{font-size:12px;color:#9B9BAE}
+
+  /* HERO */
+  .hero{
+    background:#1B1D3A;border:1px solid #2E2F55;border-radius:16px;
+    padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;
+  }
+  .gcircle{
+    width:64px;height:64px;border-radius:50%;flex:none;
+    display:grid;place-items:center;font-size:30px;font-weight:800;color:#12142A;
+    background:#9A7B0A;
+  }
+  .hero h1{font-size:19px;font-weight:800;color:#9A7B0A}
+  .hero p{font-size:13px;color:#B8B8C8;margin-top:2px}
+
+  /* 지수 칩 */
+  .idxrow{display:flex;gap:8px;margin-bottom:14px}
+  .chip{flex:1;background:#1B1D3A;border:1px solid #2A2C4E;border-radius:10px;
+         padding:8px 6px;text-align:center}
+  .chip .cl{display:block;font-size:10px;color:#8686A0;margin-bottom:2px}
+  .chip b{display:block;font-size:14px}
+  .chip span.u{color:#FF6B6B;font-size:11px}
+  .chip span.d{color:#5B9DFF;font-size:11px}
+  .chip span.f{color:#8686A0;font-size:11px}
+
+  h2{font-size:12px;letter-spacing:.1em;color:#8686A0;font-weight:800;
+      margin:18px 0 8px;text-transform:uppercase}
+
+  /* 오늘 할 일 - 아코디언 형태로 압축 */
+  .todo{background:#1B1D3A;border:1px solid #2A2C4E;border-radius:12px;overflow:hidden}
+  .todo .item{padding:11px 14px;border-bottom:1px solid #24264a;
+               display:flex;gap:10px;align-items:flex-start}
+  .todo .item:last-child{border-bottom:none}
+  .todo .n{width:20px;height:20px;border-radius:50%;background:#2E2F55;color:#C8C8D8;
+            font-size:11px;font-weight:800;display:grid;place-items:center;flex:none;margin-top:1px}
+  .todo .tx b{font-size:13.5px;display:block}
+  .todo .tx p{font-size:12px;color:#9494A8;margin-top:1px}
+  .tag{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:800;margin-left:5px;vertical-align:1px}
+  .auto{background:#173A24;color:#5FDB8C}
+  .manual{background:#3A2A17;color:#F0A85F}
+
+  /* 전략 카드 - 가로 스크롤 */
+  .srow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .srow::-webkit-scrollbar{display:none}
+  .scard{flex:0 0 auto;width:104px;background:#1B1D3A;border:1px solid #2A2C4E;
+          border-radius:12px;padding:10px;text-align:center}
+  .sfit{font-size:24px;font-weight:800}
+  .sname{font-size:11.5px;margin-top:4px;color:#E8E8F0;line-height:1.3;min-height:29px}
+  .strust{font-size:11px;color:#C9A227;margin-top:2px}
+
+  /* 추천 종목 리스트 */
+  .rlist{background:#1B1D3A;border:1px solid #2A2C4E;border-radius:12px;overflow:hidden}
+  .rrow{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #24264a}
+  .rrow:last-child{border-bottom:none}
+  .rscore{width:34px;height:34px;border-radius:8px;background:#2E2F55;color:#7FB3FF;
+           font-size:15px;font-weight:800;display:grid;place-items:center;flex:none}
+  .rname{font-size:14px;font-weight:700}
+
+  /* 뉴스 */
+  .nrow{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid #24264a;
+         text-decoration:none;color:inherit}
+  .nrow:last-child{border-bottom:none}
+  .ndot{width:7px;height:7px;border-radius:50%;flex:none}
+  .ntitle{flex:1;font-size:13px;line-height:1.4}
+  .ntag{font-size:11px;font-weight:800;flex:none}
+
+  /* 테마 칩 */
+  .tchip{flex:0 0 auto;width:98px;background:#1B1D3A;border:1px solid #2A2C4E;
+          border-radius:12px;padding:10px;text-align:center}
+  .tchip b{display:block;font-size:20px;font-weight:800;color:#FF9F6B}
+  .tchip span{display:block;font-size:11.5px;margin-top:3px;color:#E8E8F0;line-height:1.3}
+  .tchip small{display:block;font-size:10px;color:#8686A0;margin-top:2px}
+
+  /* 검색식 아코디언 */
+  .facc{background:#1B1D3A;border:1px solid #2A2C4E;border-radius:10px;
+         margin-bottom:6px;padding:0}
+  .facc summary{padding:11px 13px;font-size:13px;font-weight:700;list-style:none;
+                 display:flex;align-items:center;gap:7px;cursor:pointer}
+  .facc summary::-webkit-details-marker{display:none}
+  .facc summary::after{content:"▾";margin-left:auto;color:#7A7A8C;font-size:11px}
+  .facc[open] summary::after{content:"▴"}
+  .fid{font-size:10px;background:#2E2F55;padding:2px 6px;border-radius:5px;color:#C8C8D8}
+  .flevel{font-size:10px;color:#8686A0;border:1px solid #2A2C4E;padding:1px 6px;border-radius:5px;margin-left:auto}
+  .fdesc{font-size:12.5px;color:#B0B0C0;padding:0 13px 8px;margin-top:-4px}
+  .fmeta{font-size:11.5px;color:#8686A0;padding:0 13px 8px}
+  .flink{display:block;font-size:12px;color:#7FB3FF;text-decoration:none;
+          padding:0 13px 12px;font-weight:700}
+
+  .note{background:#2A230F;border:1px solid #4A3C1A;border-radius:10px;
+         padding:12px 14px;font-size:12px;color:#E0C98A;margin-top:16px}
+  .note b{display:block;margin-bottom:3px;font-size:13px}
+  .err{background:#3A2020;border:1px solid #5A3030;border-radius:8px;
+        padding:9px 12px;font-size:11.5px;color:#E0A0A0;margin-bottom:10px}
+  .empty{color:#7A7A8C;font-size:12.5px;padding:10px}
+
+  footer{margin-top:20px;font-size:10.5px;color:#6A6A7C;text-align:center;line-height:1.6}
+  footer a{color:#7FB3FF;text-decoration:none;font-weight:700}
+</style></head><body>
+
+<div class="top">
+  <span class="kicker">STOCKOS AI</span>
+  <span class="date">8/8 (토)</span>
+</div>
+
+
+
+<div class="hero">
+  <div class="gcircle">C</div>
+  <div>
+    <h1>관망 우선</h1>
+    <p>애매한 시장입니다. 신중하게 접근하세요.</p>
+  </div>
+</div>
+
+<div class="idxrow"><div class="chip"><span class="cl">코스피</span><b>6,296</b><span class="d">-4.58%</span></div><div class="chip"><span class="cl">코스닥</span><b>802</b><span class="u">+0.26%</span></div><div class="chip"><span class="cl">환율</span><b>1,407</b><span class="d">-0.96%</span></div></div>
+
+<h2>오늘 할 일</h2>
+<div class="todo">
+  <div class="item"><div class="n">1</div><div class="tx">
+    <b>시장 확인<span class="tag auto">자동</span></b>
+    <p>C등급 · 하락장</p></div></div>
+  <div class="item"><div class="n">2</div><div class="tx">
+    <b>전략 1~2개 고르기<span class="tag auto">자동</span></b>
+    <p>아래 카드에서 점수 높은 것 선택</p></div></div>
+  <div class="item"><div class="n">3</div><div class="tx">
+    <b>키움서 종목 검색<span class="tag manual">직접</span></b>
+    <p>0150 → 검색식 조건 입력 → 검색</p></div></div>
+  <div class="item"><div class="n">4</div><div class="tx">
+    <b>매수시 기록<span class="tag manual">직접</span></b>
+    <p>Notion Portfolio에 남기기</p></div></div>
+  <div class="item"><div class="n">5</div><div class="tx">
+    <b>주간 리뷰<span class="tag manual">직접</span></b>
+    <p>이번 주 추천 성과를 돌아보기</p></div></div>
+</div>
+
+<h2>오늘의 추천 · AI점수순</h2>
+<div class="rlist">
+        <div class="rrow">
+          <div class="rscore">54</div>
+          <div class="rname">삼성바이오로직스</div>
+        </div>
+        <div class="rrow">
+          <div class="rscore">49</div>
+          <div class="rname">한화에어로스페이스</div>
+        </div>
+        <div class="rrow">
+          <div class="rscore">46</div>
+          <div class="rname">SK하이닉스</div>
+        </div>
+        <div class="rrow">
+          <div class="rscore">46</div>
+          <div class="rname">삼성전자</div>
+        </div>
+        <div class="rrow">
+          <div class="rscore">45</div>
+          <div class="rname">HD현대중공업</div>
+        </div></div>
+
+<h2>주요 뉴스</h2>
+<div class="rlist">
+        <a class="nrow" href="https://www.mk.co.kr/news/stock/12121635" target="_blank">
+          <span class="ndot" style="background:#5FDB8C"></span>
+          <span class="ntitle">美증시, 고용 악화에 금리인상 기대 후퇴…S&amp;P500 사상최고치 마감</span>
+          <span class="ntag" style="color:#5FDB8C">호재</span>
+        </a>
+        <a class="nrow" href="https://www.mk.co.kr/news/economy/12120949" target="_blank">
+          <span class="ndot" style="background:#FF6B6B"></span>
+          <span class="ntitle">정부는 왜 ‘시가 45억’에서 선 그었나 … 종부세가 부유세 된 이유</span>
+          <span class="ntag" style="color:#FF6B6B">악재</span>
+        </a>
+        <a class="nrow" href="https://www.mk.co.kr/news/stock/12121644" target="_blank">
+          <span class="ndot" style="background:#8686A0"></span>
+          <span class="ntitle">“금값 떨어진 지금이 기회다”…골드바 쌓기 시작한 한·중 중앙은행 [원자재로 살아남기]</span>
+          <span class="ntag" style="color:#8686A0">중립</span>
+        </a></div>
+
+<h2>강세 테마 TOP5</h2>
+<div class="srow">
+        <div class="tchip">
+          <b>92</b>
+          <span>AI</span>
+          <small>SK하이닉스</small>
+        </div>
+        <div class="tchip">
+          <b>90</b>
+          <span>반도체</span>
+          <small>삼성전자, SK하이닉스</small>
+        </div>
+        <div class="tchip">
+          <b>85</b>
+          <span>방산</span>
+          <small>한화에어로스페이스</small>
+        </div>
+        <div class="tchip">
+          <b>80</b>
+          <span>전력</span>
+          <small>HD현대일렉트릭, LS ELECTRIC</small>
+        </div>
+        <div class="tchip">
+          <b>78</b>
+          <span>조선</span>
+          <small>HD현대중공업</small>
+        </div></div>
+
+<h2>오늘 유리한 전략 · 하락장</h2>
+<div class="srow">
+        <div class="scard">
+          <div class="sfit" style="color:#9A7B0A">88</div>
+          <div class="sname">가치투자 (버핏식)</div>
+          <div class="strust">⭐⭐⭐⭐</div>
+        </div>
+        <div class="scard">
+          <div class="sfit" style="color:#9A7B0A">82</div>
+          <div class="sname">마법공식 (그린블라트)</div>
+          <div class="strust">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="scard">
+          <div class="sfit" style="color:#9A7B0A">75</div>
+          <div class="sname">논문 전략</div>
+          <div class="strust">⭐⭐⭐⭐⭐</div>
+        </div>
+        <div class="scard">
+          <div class="sfit" style="color:#9A7B0A">70</div>
+          <div class="sname">퀀트 (팩터결합)</div>
+          <div class="strust">⭐⭐⭐⭐</div>
+        </div>
+        <div class="scard">
+          <div class="sfit" style="color:#9A7B0A">45</div>
+          <div class="sname">실적주</div>
+          <div class="strust">⭐⭐⭐⭐</div>
+        </div></div>
+
+<h2>키움 조건검색식 (탭해서 펼치기)</h2>
+
+        <details class="facc">
+          <summary><span class="fid">SF0024</span> 저PBR 턴어라운드 (하락장 방어)
+            <span class="flevel">중급</span></summary>
+          <p class="fdesc">청산가치 근처 + 실적 반등 + 바닥 확인된 종목. 하락장 방어용</p>
+          <p class="fmeta">전략: 가치투자 (버핏식)</p>
+          <a class="flink" href="https://app.notion.com/p/PBR-3a70ec67557181aa8f8ef96113823c71" target="_blank">키움 조건 전문 보기 →</a>
+        </details>
+        <details class="facc">
+          <summary><span class="fid">SF0019</span> 논문 재현 팩터 조합
+            <span class="flevel">전문가</span></summary>
+          <p class="fdesc">논문 검증 팩터를 백테스트 통과 조건으로만 적용.</p>
+          <p class="fmeta">전략: 논문 전략</p>
+          <a class="flink" href="https://app.notion.com/p/3a50ec67557181049530ebb7d93c1d9c" target="_blank">키움 조건 전문 보기 →</a>
+        </details>
+        <details class="facc">
+          <summary><span class="fid">SF0013</span> 멀티팩터 퀀트 랭킹
+            <span class="flevel">고급</span></summary>
+          <p class="fdesc">밸류+퀄리티+모멘텀 결합. 과최적화·거래비용 반영 필수.</p>
+          <p class="fmeta">전략: 퀀트 (팩터결합)</p>
+          <a class="flink" href="https://app.notion.com/p/3a50ec675571819bb96bde77dc290047" target="_blank">키움 조건 전문 보기 →</a>
+        </details>
+        <details class="facc">
+          <summary><span class="fid">SF0001</span> 가치우량주 필터 (퀄리티+가치+수급)
+            <span class="flevel">중급</span></summary>
+          <p class="fdesc">중장기 주도 가치주 발굴. 제외종목 설정 후 재무·추세·수급 8조건 AND 결합.</p>
+          <p class="fmeta">전략: 가치투자 (버핏식)</p>
+          <a class="flink" href="https://app.notion.com/p/3a50ec67557181c6bf0cc6f8b9ec8d42" target="_blank">키움 조건 전문 보기 →</a>
+        </details>
+        <details class="facc">
+          <summary><span class="fid">SF0005</span> 마법공식 ROC+EY 랭킹
+            <span class="flevel">중급</span></summary>
+          <p class="fdesc">그린블라트 마법공식. 두 팩터 순위 합산 상위 30~50종목.</p>
+          <p class="fmeta">전략: 마법공식 (그린블라트)</p>
+          <a class="flink" href="https://app.notion.com/p/ROC-EY-3a50ec67557181f69b0ee35413e23bb1" target="_blank">키움 조건 전문 보기 →</a>
+        </details>
+
+<div class="note">
+  <b>⚠️ 종목 추천은 참고용</b>
+  차트·수급·재무는 실전 KIS로 정확하지만, 최종 매수 판단은 직접 하세요.
+  이 화면은 정보 제공용이며 AI는 매매하지 않습니다.
+</div>
+
+<footer>
+  07:45 생성 ·
+  <a href="https://app.notion.com/p/3a60ec67557181d5b3f1cbbad6fb6f68">Notion 열기</a><br>
+  투자 조언 아님 · 판단과 책임은 본인에게
+</footer>
+
+</body></html>
